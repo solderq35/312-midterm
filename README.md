@@ -1,6 +1,7 @@
 # 312 Midterm Minecraft Server Setup Guide
 
 Table of Contents (Might be broken on PDF)
+- [Video Demo](#video-demo)
 - [References](#references)
 - [EC2 Setup](#ec2-setup)
 - [SSH into EC2 Server](#ssh-into-ec2-server)
@@ -11,6 +12,9 @@ Table of Contents (Might be broken on PDF)
 - [Running the Minecraft Server](#running-the-minecraft-server)
 - [Automating Server Start](#automating-server-start)
 - [Minecraft Client](#minecraft-client)
+
+## Video Demo
+- https://youtu.be/MezIKRTq1zM
 
 ## References
 
