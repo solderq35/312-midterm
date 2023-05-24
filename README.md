@@ -71,10 +71,12 @@ Run the following commands after SSH'ing into your EC2 instance:
 
   - Move the extracted folder into `/opt/`
 
-- `sudo tee /etc/profile.d/jdk.sh <<EOF`
-  `export JAVA_HOME=/opt/jdk-17`
-  `export PATH=\$PATH:\$JAVA_HOME/bin`
-  `EOF`
+- ```
+  sudo tee /etc/profile.d/jdk.sh <<EOF
+  export JAVA_HOME=/opt/jdk-17
+  export PATH=\$PATH:\$JAVA_HOME/bin
+  EOF
+  ```
 
   - Run these commands one line at a time! Sets the PATH for Java
 
@@ -128,6 +130,7 @@ Run the following commands after SSH'ing into your EC2 instance:
   - To sign out of root user
 
 - `whoami`
+
   - To check default (non root) username. It should say `ec2-user` for the default user. If not, write down what the username for the next steps and substitute accordingly
 
 - `sudo chown -R ec2-user:ec2-user /opt/minecraft`
@@ -169,7 +172,7 @@ Run the following commands after SSH'ing into your EC2 instance:
   - `sudo nano /etc/systemd/system/minecraft.service`
   - Add the following:
 
-    - ````[Unit]
+    - ```[Unit]
       Description=Minecraft Server
       After=network.target
 
@@ -181,7 +184,7 @@ Run the following commands after SSH'ing into your EC2 instance:
 
       [Install]
       WantedBy=multi-user.target
-      ````
+      ```
 
 - Run the following in root directory as `ec2-user`:
 
