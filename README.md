@@ -1,6 +1,7 @@
 # 312 Midterm Minecraft Server Setup Guide
 
 Table of Contents (Might be broken on PDF)
+
 - [Video Demo](#video-demo)
 - [References](#references)
 - [EC2 Setup](#ec2-setup)
@@ -14,6 +15,7 @@ Table of Contents (Might be broken on PDF)
 - [Minecraft Client](#minecraft-client)
 
 ## Video Demo
+
 - https://youtu.be/MezIKRTq1zM
   - Read Youtube Video Description for Timestamps
 
@@ -47,12 +49,12 @@ Table of Contents (Might be broken on PDF)
 
 - In the `Network Settings` menu, click the `Edit` button to the right to edit the Network Settings
 
-  - ![image](https://github.com/solderq35/312-midterm/assets/82061589/478ba998-38d3-4cf9-b861-d98f1d81b13a)
+  - ![image](https://media.discordapp.net/attachments/1018323831468851202/1110852121915572224/240506498-478ba998-38d3-4cf9-b861-d98f1d81b13a.png)
   - Set `Auto-assign public IP` to `Enable`, if not already the case
   - Click on "Create Security Group"
   - Keep the existing default SSH option unchanged in the Security Group
   - Click `Add security group rule`. Set Type as `Custom TCP`, Protocol as `TCP`, Port Range as `25565`, Source Type as `Custom`, Source as `0.0.0.0/0`, Description as something memorable like `Minecraft Port`
-    - ![image](https://github.com/solderq35/312-midterm/assets/82061589/caf24070-7592-438a-b6c7-b8c541f76d14)
+    - ![image](https://media.discordapp.net/attachments/1018323831468851202/1110852794967146626/240507280-caf24070-7592-438a-b6c7-b8c541f76d14.png)
 
 - Click `Launch Instance` button in bottom right to finish EC2 instance setup
 
@@ -66,12 +68,12 @@ Table of Contents (Might be broken on PDF)
 
 - Once you are sure it's running (check `Instance State` status and refresh the page frequently if it hasn't started yet), click the `Connect` button, then `SSH Client`
 
-  - ![image](https://github.com/solderq35/312-midterm/assets/82061589/11fbabaa-843c-444e-916f-e0c20f9c84ee)
+  - ![image](https://media.discordapp.net/attachments/1018323831468851202/1110852904451055666/240506796-11fbabaa-843c-444e-916f-e0c20f9c84ee.png)
   - Read instructions on the Connect Menu page
   - Double check with instructions, but run `chmod 400 <private SSH key>` if on Unix on your PC (If your local PC is Windows, it should work out of the box). Make sure you are in a directory where you can access the SSH private key. Maybe put that private SSH key in your PATH
   - Connect to your instance with the public DNS, e.g. `ssh -i "<private key filename>" <public DNS>`, where the values in brackets are stand-in values. Go back to the `Instances` menu for your EC2 instance if you want to double check the public DNS value
     - Example: `ssh -i "lab7.pem" ec2-user@ec2-54-175-58-38.compute-1.amazonaws.com`
-    - ![image](https://github.com/solderq35/312-midterm/assets/82061589/fe8ff3a2-5190-4fab-8681-0baa8130fbc5)
+    - ![image](https://media.discordapp.net/attachments/1018323831468851202/1110852997036122172/240507798-fe8ff3a2-5190-4fab-8681-0baa8130fbc5.png)
 
 - Make sure you can SSH into your EC2 instance before proceeding further
 
@@ -217,7 +219,7 @@ Run the following commands after SSH'ing into your EC2 instance:
 - Reboot the EC2 instance now, ssh back in
 
 - Use `sudo journalctl -u minecraft.service --t` to check if the server is running, press down arrow keys to scroll all the way down
-  - ![image](https://github.com/solderq35/312-midterm/assets/82061589/48b7915e-4c36-4193-ac89-4a7cd066b64f)
+  - ![image](https://media.discordapp.net/attachments/1018323831468851202/1110853101759496252/240508606-48b7915e-4c36-4193-ac89-4a7cd066b64f.png)
   - Check back periodically if you just restarted the EC2 instance
     - `Ctrl C` to leave the logs, then check `sudo journalctl -u minecraft.service --t` again
   - Not sure on the details on how it works but `--t` helps you skip to near the bottom of the output logs
@@ -227,12 +229,12 @@ Run the following commands after SSH'ing into your EC2 instance:
 - Get Minecraft from https://www.minecraft.net/en-us
   - No need for too much detail here right? I did get the paid version of Minecraft for PC (Java edition) if it matters
 - After installing and booting up the Minecraft Launcher, go to Installations menu, then New Installation, then `release 1.18.2`
-  - ![image](https://github.com/solderq35/312-midterm/assets/82061589/25d6dc02-16a0-41c1-a76c-4b8c1eb0519f)
+  - ![image](https://media.discordapp.net/attachments/1018323831468851202/1110853183070273617/240507969-25d6dc02-16a0-41c1-a76c-4b8c1eb0519f.png)
   - This is important because 1.18.2 client is needed based on the server installed (e.g. Java 17) in previous steps. Other versions of Minecraft Client may not be compatible!
   - Create the 1.18.2 installation and launch it
 - After launching 1.18.2 Minecraft client, select `Multiplayer`, then `Proceed`, then `Direct Connection`. Enter in the Public IPV4 address as stated on your EC2 instance
-  - ![image](https://github.com/solderq35/312-midterm/assets/82061589/08d73bff-78dd-498a-b289-319cc61c2207)
-  - ![image](https://github.com/solderq35/312-midterm/assets/82061589/fd2b3e9b-8cde-4081-ae99-df85f56fe404)
-  - ![image](https://github.com/solderq35/312-midterm/assets/82061589/051ca4a0-6781-43e3-893e-ee7c583782b9)
-  - ![image](https://github.com/solderq35/312-midterm/assets/82061589/28fe7ad2-4757-4507-8f5a-36e015708e64)
+  - ![image](https://media.discordapp.net/attachments/1018323831468851202/1110853410816790558/240508206-08d73bff-78dd-498a-b289-319cc61c2207.png)
+  - ![image](https://media.discordapp.net/attachments/1018323831468851202/1110853497236238366/240508263-fd2b3e9b-8cde-4081-ae99-df85f56fe404.png)
+  - ![image](https://media.discordapp.net/attachments/1018323831468851202/1110853577175466074/240508349-051ca4a0-6781-43e3-893e-ee7c583782b9.png)
+  - ![image](https://media.discordapp.net/attachments/1018323831468851202/1110853643449671751/240508422-28fe7ad2-4757-4507-8f5a-36e015708e64.png)
 - Have fun on your server. Dig a hole in the ground
