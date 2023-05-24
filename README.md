@@ -42,3 +42,73 @@ References
   - Connect to your instance with the public DNS, e.g. `ssh -i "<private key filename>" <public DNS>`, where the values in brackets are stand-in values. Go back to the `Instances` menu for your EC2 instance if you want to double check the public DNS value
 
 - Make sure you can SSh into your EC2 instance before proceeding further.
+
+## Installing Software Dependencies
+
+### Install Java 17
+
+- `wget https://download.java.net/java/GA/jdk17/0d483333a00540d886896bac774ff48b/35/GPL/openjdk-17_linux-x64_bin.tar.gz`
+
+- `tar xvf openjdk-17_linux-x64_bin.tar.gz`
+
+- `sudo mv jdk-17 /opt/`
+
+- `sudo tee /etc/profile.d/jdk.sh <<EOF`
+        `export JAVA_HOME=/opt/jdk-17`
+        `export PATH=\$PATH:\$JAVA_HOME/bin`
+        `EOF`
+
+- `source /etc/profile.d/jdk.sh`
+
+- `echo $JAVA_HOME`
+
+- `java -version`
+
+### Install Minecraft Server Jar
+
+- `sudo su`
+
+- `mkdir /opt/minecraft/`
+
+- `mkdir /opt/minecraft/server/`
+
+- `cd /opt/minecraft/server`
+
+- `wget https://launcher.mojang.com/v1/objects/c8f83c5655308435b3dcf03c06d9fe8740a77469/server.jar`
+
+## User Permissions
+
+- At this point you should still be signed in as root (due to `sudo su`)
+
+- Type `cd` to return to root directory
+
+- Type `exit` to sign out of root user.
+
+- Type `whoami` - it should say `ec2-user`
+
+- `sudo chown -R ec2-user:ec2-user /opt/minecraft`
+
+- `sudo chmod -R 750 /opt/minecraft`
+
+- `sudo visudo`
+  - Edit file - Add this to the bottom of visudo file: 
+    - `ec2-user ALL=(ALL) NOPASSWD: /usr/bin/java -Xmx1024M -Xms1024M -jar /opt/minecraft/server.jar nogui`
+
+## Running the Minecraft Server
+
+- Return to the server directory with `cd /opt/minecraft/server` and make sure you are still signed in as `ec2-user` via `whoami`
+
+- `java -Xmx1024M -Xms1024M -jar /opt/minecraft/server.jar nogui`
+
+- If it's your first time running the server, after running the server you will get an error relating to EULA.
+  - Fix with `vi eula.txt`, set `eula=true`
+
+## Automating Server Start
+
+- `nano ~/.bashrc`
+
+- Add to bottom of file: `java -Xmx1024M -Xms1024M -jar /opt/minecraft/server/server.jar nogui`
+
+- `source ~/.bashrc` to restart bashrc; should immediately boot Minecraft Server
+
+- Should start Minecraft server whenever the EC2 server boots
