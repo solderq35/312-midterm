@@ -11,23 +11,23 @@
 
 ## EC2 Setup
 
-- From the AWS homepage / dashboard, type in `EC2` into the upper left search bar, and click on it to go to the EC2 menu.
+- From the AWS homepage / dashboard, type in `EC2` into the upper left search bar, and click on it to go to the EC2 menu
 
-- From the EC2 menu, click on the `Launch Instance` button.
+- From the EC2 menu, click on the `Launch Instance` button
 
-- In the Launch Instance menu, name your EC2 instance something like "Minecraft" so you can remember it.
+- In the Launch Instance menu, name your EC2 instance something like "Minecraft" so you can remember it
 
-- For the `Application and OS Images (Amazon Machine Image)` menu, select an Amazon Linux, 64bit (x86) OS image.
+- For the `Application and OS Images (Amazon Machine Image)` menu, select an Amazon Linux, 64bit (x86) OS image
 
-  - This should be the **default** option.
+  - This should be the **default** option
 
-- For the `Instance type` menu, select t2.small (should pick a t2 small or bigger for this).
+- For the `Instance type` menu, select `t2.small` (should pick a t2 small or bigger for this)
 
-- For `Key pair (login)` menu, I recommend just creating a new SSH key (click the `Create new key pair` button). I used the default options (`RSA`, `.pem`).
+- For `Key pair (login)` menu, I recommend just creating a new SSH key (click the `Create new key pair` button). I used the default options (`RSA`, `.pem`)
 
-  - Name the keypair something memorable, like `MinecraftKey`. In my case though I'm reusing an old key called "lab7".
+  - Name the keypair something memorable, like `MinecraftKey`. In my case though I'm reusing an old key called `lab7`
 
-- In the `Network Settings` menu, click the `Edit` button to the right to edit the Network Settings.
+- In the `Network Settings` menu, click the `Edit` button to the right to edit the Network Settings
 
   - Set `Auto-assign public IP` to `Enable`, if not already the case
   - Click on "Create Security Group"
@@ -44,13 +44,13 @@
 
 - Click on `Instance ID` on your Minecraft Server
 
-- Once you are sure it's running (check `Instance State` status and refresh the page frequently if it hasn't started yet), click the `Connect` button, then `SSH Client`.
+- Once you are sure it's running (check `Instance State` status and refresh the page frequently if it hasn't started yet), click the `Connect` button, then `SSH Client`
 
   - Read instructions here
-  - Double check with instructions, but run `chmod 400 <private SSH key>` if on Unix on your PC. Make sure you are in a directory where you can access the SSH private key. Maybe put that private SSH key in your PATH.
+  - Double check with instructions, but run `chmod 400 <private SSH key>` if on Unix on your PC. Make sure you are in a directory where you can access the SSH private key. Maybe put that private SSH key in your PATH
   - Connect to your instance with the public DNS, e.g. `ssh -i "<private key filename>" <public DNS>`, where the values in brackets are stand-in values. Go back to the `Instances` menu for your EC2 instance if you want to double check the public DNS value
 
-- Make sure you can SSh into your EC2 instance before proceeding further.
+- Make sure you can SSh into your EC2 instance before proceeding further
 
 ## Installing Software Dependencies
 
@@ -91,7 +91,7 @@
 
 - Type `cd` to return to root directory
 
-- Type `exit` to sign out of root user.
+- Type `exit` to sign out of root user
 
 - Type `whoami` - it should say `ec2-user`
 
@@ -155,5 +155,5 @@
 - After installing and booting up the Minecraft Launcher, go to Installations menu, then New Installation, then `release 1.18.2`
   - This is important because 1.18.2 client is needed based on the server installed (e.g. Java 17) in previous steps. Other versions of Minecraft Client may not be compatible!
   - Create the 1.18.2 installation and launch it
-- After launching 1.18.2 Minecraft client, select `Multiplayer`, then `Proceed`, then `Direct Connection`. Enter in the Public IPV4 address as stated on your EC2 instance.
+- After launching 1.18.2 Minecraft client, select `Multiplayer`, then `Proceed`, then `Direct Connection`. Enter in the Public IPV4 address as stated on your EC2 instance
 - Have fun on your server. Dig a hole in the ground
