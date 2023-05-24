@@ -28,7 +28,8 @@
   - Name the keypair something memorable, like `MinecraftKey`. In my case though I'm reusing an old key called `lab7`
 
 - In the `Network Settings` menu, click the `Edit` button to the right to edit the Network Settings
-  - ![image](https://github.com/solderq35/312-midterm/assets/82061589/478ba998-38d3-4cf9-b861-d98f1d81b13a) 
+
+  - ![image](https://github.com/solderq35/312-midterm/assets/82061589/478ba998-38d3-4cf9-b861-d98f1d81b13a)
   - Set `Auto-assign public IP` to `Enable`, if not already the case
   - Click on "Create Security Group"
   - Keep the existing default SSH option unchanged in the Security Group
@@ -46,13 +47,13 @@
 - Click on `Instance ID` on your Minecraft Server
 
 - Once you are sure it's running (check `Instance State` status and refresh the page frequently if it hasn't started yet), click the `Connect` button, then `SSH Client`
+
   - ![image](https://github.com/solderq35/312-midterm/assets/82061589/11fbabaa-843c-444e-916f-e0c20f9c84ee)
   - Read instructions on the Connect Menu page
   - Double check with instructions, but run `chmod 400 <private SSH key>` if on Unix on your PC (If your local PC is Windows, it should work out of the box). Make sure you are in a directory where you can access the SSH private key. Maybe put that private SSH key in your PATH
   - Connect to your instance with the public DNS, e.g. `ssh -i "<private key filename>" <public DNS>`, where the values in brackets are stand-in values. Go back to the `Instances` menu for your EC2 instance if you want to double check the public DNS value
     - Example: `ssh -i "lab7.pem" ec2-user@ec2-54-175-58-38.compute-1.amazonaws.com`
     - ![image](https://github.com/solderq35/312-midterm/assets/82061589/fe8ff3a2-5190-4fab-8681-0baa8130fbc5)
-
 
 - Make sure you can SSH into your EC2 instance before proceeding further
 
