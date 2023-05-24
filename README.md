@@ -1,10 +1,13 @@
 # 312 Midterm Minecraft Server Setup Guide
 
-References
+## References
 
 - https://www.linkedin.com/pulse/setup-minecraft-server-java-edition-aws-ec2-keran-mckenzie/
+  - Heavily inspired by this article although I did have to change the Java install steps due to some dependency errors, and this article also did not cover how to automatically start the server with systemctl
 - https://techviewleo.com/install-java-openjdk-on-amazon-linux-system/
+  - Helped me a lot on installing Java 17 for the server dependencies
 - ChatGPT
+  - Helped a lot on the systemctl part for automatically restarting server
 
 ## EC2 Setup
 
@@ -148,7 +151,7 @@ References
 ## Minecraft Client
 
 - Get Minecraft from https://www.minecraft.net/en-us
-  - No need for detail here right? I did get the paid version of Minecraft if it matters
+  - No need for detail here right? I did get the paid version of Minecraft for PC (Java edition) if it matters
 - After installing and booting up the Minecraft Launcher, go to Installations menu, then New Installation, then `release 1.18.2`
   - This is important because 1.18.2 client is needed based on the server installed (e.g. Java 17) in previous steps. Other versions of Minecraft Client may not be compatible!
   - Create the 1.18.2 installation and launch it
