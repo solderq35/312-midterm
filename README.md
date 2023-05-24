@@ -1,6 +1,7 @@
 # 312 Midterm Minecraft Server Setup Guide
 
 References
+
 - https://www.linkedin.com/pulse/setup-minecraft-server-java-edition-aws-ec2-keran-mckenzie/
 - https://techviewleo.com/install-java-openjdk-on-amazon-linux-system/
 - ChatGPT
@@ -13,15 +14,18 @@ References
 
 - In the Launch Instance menu, name your EC2 instance something like "Minecraft" so you can remember it.
 
-- For the `Application and OS Images (Amazon Machine Image)` menu, select an Amazon Linux, 64bit (x86) OS image. 
+- For the `Application and OS Images (Amazon Machine Image)` menu, select an Amazon Linux, 64bit (x86) OS image.
+
   - This should be the **default** option.
 
 - For the `Instance type` menu, select t2.small (should pick a t2 small or bigger for this).
 
-- For `Key pair (login)` menu, I recommend just creating a new SSH key (click the `Create new key pair` button). I used the default options (`RSA`, `.pem`). 
+- For `Key pair (login)` menu, I recommend just creating a new SSH key (click the `Create new key pair` button). I used the default options (`RSA`, `.pem`).
+
   - Name the keypair something memorable, like `MinecraftKey`. In my case though I'm reusing an old key called "lab7".
 
-- In the `Network Settings` menu, click the `Edit` button to the right to edit the Network Settings. 
+- In the `Network Settings` menu, click the `Edit` button to the right to edit the Network Settings.
+
   - Set `Auto-assign public IP` to `Enable`, if not already the case
   - Click on "Create Security Group"
   - Keep the existing default SSH option unchanged in the Security Group
@@ -30,6 +34,7 @@ References
 - Click `Launch Instance` button in bottom right to finish EC2 instance setup
 
 ## SSH into EC2 Server
+
 - Wait a few minutes for the EC2 instance to start up, then return to the EC2 main menu (search `EC2` in the upper left search bar)
 
 - Click on `Instances` link in left navbar
@@ -37,6 +42,7 @@ References
 - Click on `Instance ID` on your Minecraft Server
 
 - Once you are sure it's running (check `Instance State` status and refresh the page frequently if it hasn't started yet), click the `Connect` button, then `SSH Client`.
+
   - Read instructions here
   - Double check with instructions, but run `chmod 400 <private SSH key>` if on Unix on your PC. Make sure you are in a directory where you can access the SSH private key. Maybe put that private SSH key in your PATH.
   - Connect to your instance with the public DNS, e.g. `ssh -i "<private key filename>" <public DNS>`, where the values in brackets are stand-in values. Go back to the `Instances` menu for your EC2 instance if you want to double check the public DNS value
@@ -54,9 +60,9 @@ References
 - `sudo mv jdk-17 /opt/`
 
 - `sudo tee /etc/profile.d/jdk.sh <<EOF`
-        `export JAVA_HOME=/opt/jdk-17`
-        `export PATH=\$PATH:\$JAVA_HOME/bin`
-        `EOF`
+  `export JAVA_HOME=/opt/jdk-17`
+  `export PATH=\$PATH:\$JAVA_HOME/bin`
+  `EOF`
 
 - `source /etc/profile.d/jdk.sh`
 
@@ -91,7 +97,7 @@ References
 - `sudo chmod -R 750 /opt/minecraft`
 
 - `sudo visudo`
-  - Edit file - Add this to the bottom of visudo file: 
+  - Edit file - Add this to the bottom of visudo file:
     - `ec2-user ALL=(ALL) NOPASSWD: /usr/bin/java -Xmx1024M -Xms1024M -jar /opt/minecraft/server.jar nogui`
 
 ## Running the Minecraft Server
@@ -105,10 +111,46 @@ References
 
 ## Automating Server Start
 
-- `nano ~/.bashrc`
+- Check if the command works as a standalone before adding to systmctl
 
-- Add to bottom of file: `java -Xmx1024M -Xms1024M -jar /opt/minecraft/server/server.jar nogui`
+  - `sudo -u <username> <java executable path> -Xmx1024M -Xms1024M -jar <path to server.jar>/server.jar nogui`
+  - Example: `sudo -u ec2-user /opt/jdk-17/bin/java -Xmx1024M -Xms1024M -jar /opt/minecraft/server/server.jar nogui`
+  - If in doubt, check `whereis java` to find Java executable path
 
-- `source ~/.bashrc` to restart bashrc; should immediately boot Minecraft Server
+- `sudo nano /etc/systemd/system/minecraft.service`
 
-- Should start Minecraft server whenever the EC2 server boots
+- Add the following:
+
+  - ````[Unit]
+    Description=Minecraft Server
+    After=network.target
+
+    [Service]
+    User=ec2-user
+    WorkingDirectory=/opt/minecraft/server
+    ExecStart=/opt/jdk-17/bin/java -Xmx1024M -Xms1024M -jar /opt/minecraft/server/server.jar nogui
+    Restart=on-failure
+
+    [Install]
+    WantedBy=multi-user.target```
+    ````
+
+- Run the following in root directory as `ec2-user`:
+
+  - `sudo systemctl daemon-reload`
+  - `sudo systemctl start minecraft`
+  - `sudo systemctl enable minecraft`
+
+- Reboot the EC2 instance now, ssh back in
+
+- Use `sudo journalctl -u minecraft.service --t` to check if the server is running, press down arrow keys to scroll all the way down
+
+## Minecraft Client
+
+- Get Minecraft from https://www.minecraft.net/en-us
+  - No need for detail here right? I did get the paid version of Minecraft if it matters
+- After installing and booting up the Minecraft Launcher, go to Installations menu, then New Installation, then `release 1.18.2`
+  - This is important because 1.18.2 client is needed based on the server installed (e.g. Java 17) in previous steps. Other versions of Minecraft Client may not be compatible!
+  - Create the 1.18.2 installation and launch it
+- After launching 1.18.2 Minecraft client, select `Multiplayer`, then `Proceed`, then `Direct Connection`. Enter in the Public IPV4 address as stated on your EC2 instance.
+- Have fun on your server. Dig a hole in the ground
