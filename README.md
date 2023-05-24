@@ -98,66 +98,90 @@ Run the following commands after SSH'ing into your EC2 instance:
 
 - `sudo su`
 
+  - Probably a better way of doing this but for now being a sudo user ensures the next parts work as intended
+
 - `mkdir /opt/minecraft/`
+
+  - Add directories for where the `server.jar` will go
 
 - `mkdir /opt/minecraft/server/`
 
-- `cd /opt/minecraft/server`
+  - Add directories for where the `server.jar` will go
+
+- `cd   - Add directories for where the `server.jar` will go`
+
+  - Navigate to the directory where the `server.jar` will go
 
 - `wget https://launcher.mojang.com/v1/objects/c8f83c5655308435b3dcf03c06d9fe8740a77469/server.jar`
+  - Install the `server.jar` in the `/opt/minecraft/server/` directory
 
 ## User Permissions
 
 - At this point you should still be signed in as root (due to `sudo su`)
 
-- Type `cd` to return to root directory
+- `cd`
 
-- Type `exit` to sign out of root user
+  - To return to root directory
 
-- Type `whoami` - it should say `ec2-user`
+- `exit`
+
+  - To sign out of root user
+
+- `whoami`
+- To check default (non root) username. It should say `ec2-user` for the default user. If not, write down what the username for the next steps and substitute accordingly
 
 - `sudo chown -R ec2-user:ec2-user /opt/minecraft`
 
+  - Give the `ec2-user` elevated permissions in the `opt/minecraft` directory
+
 - `sudo chmod -R 750 /opt/minecraft`
+
+  - chmods this `opt/minecraft` directory the right Linux file permissions. In this case, 750 gives the user read/write/execute and read/execute to people in your organization.
+    - Further reference on 750 permissions: https://chmodcommand.com/chmod-750/
 
 - `sudo visudo`
   - Edit file - Add this to the bottom of visudo file:
     - `ec2-user ALL=(ALL) NOPASSWD: /usr/bin/java -Xmx1024M -Xms1024M -jar /opt/minecraft/server.jar nogui`
+  - This adds the ec2-user as a sudo user, which might be a security issue, but it was a way to let this user run the Minecraft server
+    - More Information on editing visudo / sudoers file: https://www.digitalocean.com/community/tutorials/how-to-edit-the-sudoers-file
 
 ## Running the Minecraft Server
 
-- Return to the server directory with `cd /opt/minecraft/server` and make sure you are still signed in as `ec2-user` via `whoami`
+- Return to the server directory with `cd /opt/minecraft/server`
 
-- `java -Xmx1024M -Xms1024M -jar /opt/minecraft/server.jar nogui`
+- Make sure you are still signed in as `ec2-user` via `whoami`
+
+- Run `java -Xmx1024M -Xms1024M -jar /opt/minecraft/server.jar nogui` to see if the server at least runs
 
 - If it's your first time running the server, after running the server you will get an error relating to EULA.
   - Fix with `vi eula.txt`, set `eula=true`
 
 ## Automating Server Start
 
-- Check if the command works as a standalone before adding to systmctl
+- Check if this command works as a standalone before adding to systmctl
 
   - `sudo -u <username> <java executable path> -Xmx1024M -Xms1024M -jar <path to server.jar>/server.jar nogui`
   - Example: `sudo -u ec2-user /opt/jdk-17/bin/java -Xmx1024M -Xms1024M -jar /opt/minecraft/server/server.jar nogui`
   - If in doubt, check `whereis java` to find Java executable path
 
-- `sudo nano /etc/systemd/system/minecraft.service`
+- Once you're sure that the command above works, then let's add a sytemd file:
 
-- Add the following:
+  - `sudo nano /etc/systemd/system/minecraft.service`
+  - Add the following:
 
-  - ````[Unit]
-    Description=Minecraft Server
-    After=network.target
+    - ````[Unit]
+      Description=Minecraft Server
+      After=network.target
 
-    [Service]
-    User=ec2-user
-    WorkingDirectory=/opt/minecraft/server
-    ExecStart=/opt/jdk-17/bin/java -Xmx1024M -Xms1024M -jar /opt/minecraft/server/server.jar nogui
-    Restart=on-failure
+      [Service]
+      User=ec2-user
+      WorkingDirectory=/opt/minecraft/server
+      ExecStart=/opt/jdk-17/bin/java -Xmx1024M -Xms1024M -jar /opt/minecraft/server/server.jar nogui
+      Restart=on-failure
 
-    [Install]
-    WantedBy=multi-user.target```
-    ````
+      [Install]
+      WantedBy=multi-user.target```
+      ````
 
 - Run the following in root directory as `ec2-user`:
 
@@ -168,11 +192,14 @@ Run the following commands after SSH'ing into your EC2 instance:
 - Reboot the EC2 instance now, ssh back in
 
 - Use `sudo journalctl -u minecraft.service --t` to check if the server is running, press down arrow keys to scroll all the way down
+  - Check back periodically if you just restarted the EC2 instance
+    - `Ctrl C` to leave the logs, then check `sudo journalctl -u minecraft.service --t` again
+  - Not sure on the details on how it works but `--t` helps you skip to near the bottom of the output logs
 
 ## Minecraft Client
 
 - Get Minecraft from https://www.minecraft.net/en-us
-  - No need for detail here right? I did get the paid version of Minecraft for PC (Java edition) if it matters
+  - No need for too much detail here right? I did get the paid version of Minecraft for PC (Java edition) if it matters
 - After installing and booting up the Minecraft Launcher, go to Installations menu, then New Installation, then `release 1.18.2`
   - This is important because 1.18.2 client is needed based on the server installed (e.g. Java 17) in previous steps. Other versions of Minecraft Client may not be compatible!
   - Create the 1.18.2 installation and launch it
