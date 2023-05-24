@@ -128,7 +128,7 @@ Run the following commands after SSH'ing into your EC2 instance:
   - To sign out of root user
 
 - `whoami`
-- To check default (non root) username. It should say `ec2-user` for the default user. If not, write down what the username for the next steps and substitute accordingly
+  - To check default (non root) username. It should say `ec2-user` for the default user. If not, write down what the username for the next steps and substitute accordingly
 
 - `sudo chown -R ec2-user:ec2-user /opt/minecraft`
 
