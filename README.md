@@ -15,6 +15,7 @@ Table of Contents (Might be broken on PDF)
 
 ## Video Demo
 - https://youtu.be/MezIKRTq1zM
+  - Read Youtube Video Description for Timestamps
 
 ## References
 
