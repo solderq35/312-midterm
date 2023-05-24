@@ -180,7 +180,7 @@ Run the following commands after SSH'ing into your EC2 instance:
       Restart=on-failure
 
       [Install]
-      WantedBy=multi-user.target```
+      WantedBy=multi-user.target
       ````
 
 - Run the following in root directory as `ec2-user`:
