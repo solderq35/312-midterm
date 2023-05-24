@@ -1,5 +1,17 @@
 # 312 Midterm Minecraft Server Setup Guide
 
+Table of Contents (Might be broken on PDF)
+- [References](#references)
+- [EC2 Setup](#ec2-setup)
+- [SSH into EC2 Server](#ssh-into-ec2-server)
+- [Installing Software Dependencies](#installing-software-dependencies)
+  - [Install Java 17](#install-java-17)
+  - [Install Minecraft Server Jar](#install-minecraft-server-jar)
+- [User Permissions](#user-permissions)
+- [Running the Minecraft Server](#running-the-minecraft-server)
+- [Automating Server Start](#automating-server-start)
+- [Minecraft Client](#minecraft-client)
+
 ## References
 
 - https://www.linkedin.com/pulse/setup-minecraft-server-java-edition-aws-ec2-keran-mckenzie/
@@ -8,6 +20,7 @@
   - Helped me a lot on installing Java 17 for the server dependencies
 - ChatGPT
   - Helped a lot on the systemctl part for automatically restarting server
+- Markdown Table of Contents Generator: https://jsfiddle.net/remarkablemark/o0mja3hf/
 
 ## EC2 Setup
 
