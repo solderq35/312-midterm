@@ -46,32 +46,53 @@
 
 - Once you are sure it's running (check `Instance State` status and refresh the page frequently if it hasn't started yet), click the `Connect` button, then `SSH Client`
 
-  - Read instructions here
-  - Double check with instructions, but run `chmod 400 <private SSH key>` if on Unix on your PC. Make sure you are in a directory where you can access the SSH private key. Maybe put that private SSH key in your PATH
+  - Read instructions on the Connect Menu page
+  - Double check with instructions, but run `chmod 400 <private SSH key>` if on Unix on your PC (If your local PC is Windows, it should work out of the box). Make sure you are in a directory where you can access the SSH private key. Maybe put that private SSH key in your PATH
   - Connect to your instance with the public DNS, e.g. `ssh -i "<private key filename>" <public DNS>`, where the values in brackets are stand-in values. Go back to the `Instances` menu for your EC2 instance if you want to double check the public DNS value
+    - Example: `ssh -i "lab7.pem" ec2-user@ec2-54-175-58-38.compute-1.amazonaws.com`
 
-- Make sure you can SSh into your EC2 instance before proceeding further
+- Make sure you can SSH into your EC2 instance before proceeding further
 
 ## Installing Software Dependencies
 
 ### Install Java 17
 
+Run the following commands after SSH'ing into your EC2 instance:
+
 - `wget https://download.java.net/java/GA/jdk17/0d483333a00540d886896bac774ff48b/35/GPL/openjdk-17_linux-x64_bin.tar.gz`
+
+  - Install the tar archive for Java 17 (OpenJDK 17)
 
 - `tar xvf openjdk-17_linux-x64_bin.tar.gz`
 
+  - Extract the archive with `tar` command
+
 - `sudo mv jdk-17 /opt/`
+
+  - Move the extracted folder into `/opt/`
 
 - `sudo tee /etc/profile.d/jdk.sh <<EOF`
   `export JAVA_HOME=/opt/jdk-17`
   `export PATH=\$PATH:\$JAVA_HOME/bin`
   `EOF`
 
+  - Run these commands one line at a time! Sets the PATH for Java
+
 - `source /etc/profile.d/jdk.sh`
+
+  - Source your profile file
 
 - `echo $JAVA_HOME`
 
+  - Check where your Java executable is located (should get an output of `/opt/jdk-17`)
+
 - `java -version`
+  - Double check Java version. Should show an output of something like:
+    - ```
+      openjdk version "17" 2021-09-14
+      OpenJDK Runtime Environment (build 17+35-2724)
+      OpenJDK 64-Bit Server VM (build 17+35-2724, mixed mode, sharing)
+      ```
 
 ### Install Minecraft Server Jar
 
